@@ -4,11 +4,7 @@ const eventBaseUrl = "http://localhost:8080/api/event";
 
 export const getAllActiveEvent = async (token) => {
   return await axios
-    .get(eventBaseUrl + "/all/active", {
-      headers: {
-        token: token,
-      },
-    })
+    .get(eventBaseUrl + "/all/active", {})
     .then((res) => res.data);
 };
 

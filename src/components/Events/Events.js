@@ -15,7 +15,7 @@ const Event = () => {
   const [status, setStatus] = useState(1);
 
   useEffect(() => {
-    if (!events && session) {
+    if (!events) {
       if (!adminMode)
         getAllActiveEvent(session).then((data) =>
           setEvents(
@@ -24,7 +24,7 @@ const Event = () => {
             ))
           )
         );
-      else {
+      else if (session) {
         getAllEventsByStatus(session, status).then((data) =>
           setEvents(
             data.map((item, index) => (
@@ -44,7 +44,10 @@ const Event = () => {
   return (
     <div className="page-wrap">
       <div className="flex flex-col w-[1000px] px-4 py-2">
-        <Link className="ft_button self-start mb-4" to="/events/create">
+        <Link
+          className="ft_button self-start mb-4"
+          to={!!session ? "/events/create" : "/register"}
+        >
           Создать
         </Link>
 

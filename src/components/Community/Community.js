@@ -44,7 +44,10 @@ const Community = () => {
   return (
     <div className="page-wrap">
       <div className="flex flex-col w-[1000px] px-4 py-2">
-        <Link className="ft_button self-start mb-4" to="/community/create">
+      <Link
+          className="ft_button self-start mb-4"
+          to={!!session ? "/community/create" : "/register"}
+        >
           Создать
         </Link>
         {user && ["admin", "moderator"].includes(user.role) && (
