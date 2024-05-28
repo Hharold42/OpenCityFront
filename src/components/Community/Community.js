@@ -15,7 +15,7 @@ const Community = () => {
   const [status, setStatus] = useState(1);
 
   useEffect(() => {
-    if (!communities && session) {
+    if (!communities) {
       if (!adminMode)
         getAllActiveCommunities(session).then((data) =>
           setCommunities(
@@ -44,39 +44,42 @@ const Community = () => {
   return (
     <div className="page-wrap">
       <div className="flex flex-col w-[1000px] px-4 py-2">
-      <Link
-          className="ft_button self-start mb-4"
-          to={!!session ? "/community/create" : "/register"}
-        >
-          Создать
-        </Link>
+      <label className="ft_title">Сообщества</label>
         {user && ["admin", "moderator"].includes(user.role) && (
-          <div className="flex flex-row">
-            {adminMode && (
-              <select
-                className="ft_input mr-4"
-                value={status}
-                onChange={(e) => {
+          <div>
+            <Link
+              className="ft_button self-start mb-4"
+              to={!!session ? "/community/create" : "/register"}
+            >
+              Создать
+            </Link>
+            <div className="flex flex-row mt-4">
+              {adminMode && (
+                <select
+                  className="ft_input mr-4"
+                  value={status}
+                  onChange={(e) => {
+                    setCommunities(null);
+                    setStatus(e.target.value);
+                  }}
+                >
+                  <option value={0}>На верификации</option>
+                  <option value={1}>Активные</option>
+                  <option value={2}>Прошедшее</option>
+                  <option value={5}>Забанено</option>
+                </select>
+              )}
+
+              <button
+                className="ft_button self-start"
+                onClick={() => {
                   setCommunities(null);
-                  setStatus(e.target.value);
+                  setAdminMode((prev) => !prev);
                 }}
               >
-                <option value={0}>На верификации</option>
-                <option value={1}>Активные</option>
-                <option value={2}>Прошедшее</option>
-                <option value={5}>Забанено</option>
-              </select>
-            )}
-
-            <button
-              className="ft_button self-start"
-              onClick={() => {
-                setCommunities(null);
-                setAdminMode((prev) => !prev);
-              }}
-            >
-              {adminMode ? "User Mode" : "Admin Mode"}
-            </button>
+                {adminMode ? "User Mode" : "Admin Mode"}
+              </button>
+            </div>
           </div>
         )}
         {communities ? communities : "Отсутсвуют сообщества"}

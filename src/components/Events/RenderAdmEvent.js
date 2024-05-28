@@ -8,8 +8,16 @@ import {
 } from "../../utils/controllers/eventController";
 import { useUser } from "../../context/userContext";
 import { Link } from "react-router-dom";
-import { getReportsByTypeAndId } from "../../utils/controllers/reportContorller";
+import {
+  createReport,
+  getReportsByTypeAndId,
+} from "../../utils/controllers/reportContorller";
 import RenderReport from "../Reports/RenderReport";
+import { FaPaperPlane } from "react-icons/fa6";
+import {
+  getPhotoIdById,
+  getPhotoUrlById,
+} from "../../utils/controllers/photoController";
 
 const RenderAdmEvent = ({ item, index, controller }) => {
   const { session } = useUser();
@@ -17,31 +25,14 @@ const RenderAdmEvent = ({ item, index, controller }) => {
   const [photos, setPhotos] = useState(null);
   const [showComplaint, setShowComplaint] = useState(false);
   const [reports, setReports] = useState(null);
+  const [reportText, setReportText] = useState("");
+  const [showReports, setShowReports] = useState(false);
 
   useEffect(() => {
     const fetchPhoto = async () => {
-      const imageId = await axios
-        .get(
-          `http://localhost:8080/api/photo/all/by-id-and-type/${item.id}?type=0`
-        )
-        .then((res) => res.data)
-        .then((data) => (data.length > 0 ? data[0] : false));
-
-      if (imageId) {
-        await axios
-          .get(`http://localhost:8080/api/photo/${imageId}`, {
-            responseType: "arraybuffer",
-          })
-          .then((res) => {
-            const blob = new Blob([res.data], { type: "image/jpeg" });
-
-            const imageUrl = URL.createObjectURL(blob);
-
-            setPhotos(imageUrl);
-          });
-      } else {
-        setPhotos(false);
-      }
+      const imageId = await getPhotoIdById(item.id, 1);
+      if (imageId) await getPhotoUrlById(imageId).then((res) => setPhotos(res));
+      else setPhotos(false);
     };
 
     if (!photos) fetchPhoto();
@@ -65,6 +56,17 @@ const RenderAdmEvent = ({ item, index, controller }) => {
   };
 
   useEffect(() => {
+    let timeout;
+
+    if (showComplaint) {
+      timeout = setTimeout(() => setShowReports(true), 50);
+    } else {
+      if (timeout) clearTimeout(timeout);
+      setShowReports(false);
+    }
+  }, [showComplaint]);
+
+  useEffect(() => {
     const getReports = async () => {
       return await getReportsByTypeAndId(session, 0, item.id).then((data) =>
         setReports(
@@ -82,6 +84,15 @@ const RenderAdmEvent = ({ item, index, controller }) => {
 
     if (!reports) getReports();
   }, [reports, item, session]);
+
+  const report = () => {
+    if (reportText.length > 0) {
+      createReport(session, reportText, 0, item.id).then((res) => {
+        setShowComplaint(false);
+        setReportText("");
+      });
+    }
+  };
 
   return (
     <div className="relative h-fit transition-all duration-500">
@@ -160,14 +171,36 @@ const RenderAdmEvent = ({ item, index, controller }) => {
         } z-30`}
         style={{ top: "100%" }}
       >
+        {showReports && (
+          <div className="p-4">
+            <table className="w-full border-b border-white my-4">
+              <thead>
+                <tr className=" border-b border-white [&>*]:py-2">
+                  <th>Пользователь</th>
+                  <th>Описание</th>
+                  <th>ID</th>
+                </tr>
+              </thead>
+              <tbody>{reports && reports}</tbody>
+            </table>
+          </div>
+        )}
         <div className="p-4">
-          <div className="field_max text-left">
-            <div className="flex flex-row justify-between border-b border-solid border-white mb-4">
-              <div>Почта пользователя</div>
-              <div>Описание </div>
-              <div>ID</div>
-            </div>
-            {reports && reports}
+          <div className="field_max">
+            <label className="ft_field-label">Описание жалобы:</label>
+            <textarea
+              type="text"
+              className="ft_input"
+              value={reportText}
+              onChange={(e) => setReportText(e.target.value)}
+            />
+            <button
+              className=" ft_button self-start flex flex-row mt-4 items-center [&>*]:mx-2"
+              onClick={report}
+            >
+              Отправить
+              <FaPaperPlane />
+            </button>
           </div>
         </div>
       </div>

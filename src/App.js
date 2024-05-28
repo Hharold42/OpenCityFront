@@ -23,7 +23,6 @@ import AdmUsers from "./components/AdmUsers";
 
 function App() {
   return (
-    // <Router>
     <div className="flex flex-col min-h-screen bg-[#1A1C28] text-white">
       <Navbar />
       <main className="flex-grow">

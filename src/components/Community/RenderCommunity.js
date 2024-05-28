@@ -65,13 +65,15 @@ const RenderCommunity = ({ item, index }) => {
               <br />
               {item.contact_info}
             </div>
-            <button
-              className=" flex items-center [&>*]:mx-2 mt-auto "
-              onClick={() => setShowComplaint(!showComplaint)}
-            >
-              Отправить жалобу
-              <FaFileAlt />
-            </button>
+            {session && (
+              <button
+                className=" flex items-center [&>*]:mx-2 mt-auto "
+                onClick={() => setShowComplaint(!showComplaint)}
+              >
+                Отправить жалобу
+                <FaFileAlt />
+              </button>
+            )}
           </div>
         </div>
         <div className=" flex flex-col p-4 border-l border-white">
@@ -94,7 +96,7 @@ const RenderCommunity = ({ item, index }) => {
               onChange={(e) => setReportText(e.target.value)}
             />
             <button
-              className=" ft_button self-start flex flex-row"
+              className=" ft_button self-start flex flex-row mt-4"
               onClick={report}
             >
               <FaPaperPlane />

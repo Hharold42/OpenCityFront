@@ -24,6 +24,7 @@ const ChangePassword = () => {
   return (
     <div className="page-wrap">
       <div className="flex flex-col w-[1000px] px-4 py-2">
+      <label className="ft_title">Изменить пароль</label>
         <div className="field_max">
           <label className="ft_field-label">Новый пароль:</label>
           <input

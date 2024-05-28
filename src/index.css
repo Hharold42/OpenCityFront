@@ -28,6 +28,9 @@
   .ft_button-sm {
     @apply bg-[#2FB4FF] rounded-md px-2 py-1 text-sm;
   }
+  .email-truncate {
+    @apply w-[200px] overflow-hidden whitespace-nowrap text-ellipsis
+  }
 }
 
 /* width */

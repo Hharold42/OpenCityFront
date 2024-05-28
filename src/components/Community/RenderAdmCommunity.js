@@ -4,19 +4,15 @@ import {
   getPhotoIdById,
   getPhotoUrlById,
 } from "../../utils/controllers/photoController";
-import { FaFileAlt } from "react-icons/fa";
 import {
   deleteCommunity,
   updateCommunity,
 } from "../../utils/controllers/communityController";
 import RotWord from "../RotWord";
 import { Link } from "react-router-dom";
-import { FaPaperPlane } from "react-icons/fa6";
-import {
-  createReport,
-  getReportsByTypeAndId,
-} from "../../utils/controllers/reportContorller";
+import { createReport, getReportsByTypeAndId } from "../../utils/controllers/reportContorller";
 import RenderReport from "../Reports/RenderReport";
+import { FaPaperPlane } from "react-icons/fa6";
 
 const RenderAdmCommunity = ({ item, index, controller }) => {
   const { session } = useUser();
@@ -24,6 +20,8 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
   const [photos, setPhotos] = useState(null);
   const [showComplaint, setShowComplaint] = useState(false);
   const [reports, setReports] = useState(null);
+  const [reportText, setReportText] = useState("");
+  const [showReports, setShowReports] = useState(false);
 
   useEffect(() => {
     const fetchPhoto = async () => {
@@ -49,6 +47,17 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
   };
 
   useEffect(() => {
+    let timeout;
+
+    if (showComplaint) {
+      timeout = setTimeout(() => setShowReports(true), 50);
+    } else {
+      if (timeout) clearTimeout(timeout);
+      setShowReports(false);
+    }
+  }, [showComplaint]);
+
+  useEffect(() => {
     const getReports = async () => {
       return await getReportsByTypeAndId(session, 1, item.id).then((data) =>
         setReports(
@@ -66,6 +75,16 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
 
     if (!reports) getReports();
   }, [reports, item, session]);
+
+  const report = () => {
+    if (reportText.length > 0) {
+      createReport(session, reportText, 0, item.id).then((res) => {
+        setShowComplaint(false);
+        setReportText("");
+      });
+    }
+  };
+
   return (
     <div className="relative h-fit transition-all duration-500">
       <div
@@ -140,14 +159,34 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
         } z-30`}
         style={{ top: "100%" }}
       >
-        <div className="p-4">
-          <div className="field_max text-left">
-            <div className="flex flex-row justify-between border-b border-solid border-white mb-4">
-              <div>Почта пользователя</div>
-              <div>Описание </div>
-              <div>ID</div>
+        {showReports && (
+          <div className="p-4">
+            <div className="field_max text-left">
+              <div className="flex flex-row justify-between border-b border-solid border-white mb-4">
+                <div>Почта пользователя</div>
+                <div>Описание </div>
+                <div>ID</div>
+              </div>
+              {reports && reports}
             </div>
-            {reports && reports}
+          </div>
+        )}
+        <div className="p-4">
+          <div className="field_max">
+            <label className="ft_field-label">Описание жалобы:</label>
+            <textarea
+              type="text"
+              className="ft_input"
+              value={reportText}
+              onChange={(e) => setReportText(e.target.value)}
+            />
+            <button
+              className=" ft_button self-start flex flex-row mt-4 items-center [&>*]:mx-2"
+              onClick={report}
+            >
+              Отправить
+              <FaPaperPlane />
+            </button>
           </div>
         </div>
       </div>

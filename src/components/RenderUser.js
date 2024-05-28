@@ -11,13 +11,13 @@ const RenderUser = ({ controller, data }) => {
   const confirm = async () => {
     console.log(session, data.email, role);
     chagneRole(session, data.email, role).then(() => {
-        controller(null)
+      controller(null);
     });
   };
 
   return (
     <div className="flex flex-row my-4 justify-between [&>*]:w-full [&>*]:items-center [&>*]:mx-8">
-      <div>{data.email}</div>
+      <div className="email-truncate">{data.email}</div>
       <div>{data.registationDate}</div>
       <select
         className="ft_input"

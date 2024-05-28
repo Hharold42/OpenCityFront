@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUser } from "../../context/userContext";
 import { uploadPhotoByEvenId } from "../../utils/controllers/photoController";
+import Popup from "../Popup";
 
 const tags = [
   { value: "0", text: "Танцы" },
@@ -28,6 +29,13 @@ const CreateEvent = () => {
   });
   const [image, setImage] = useState();
   const [error, setError] = useState();
+  const [modal, setModal] = useState({
+    text: "",
+    title: "",
+    type: "",
+    active: false,
+  });
+
   const { session } = useUser();
 
   const handleChangeField = (field) => (e) => {
@@ -57,11 +65,20 @@ const CreateEvent = () => {
     return true;
   };
 
+  const closeModalController = () => {
+    setModal({ ...modal, active: false });
+  };
+
   const confirm = async (e) => {
     e.preventDefault();
 
     if (!isFormComplete()) {
-      alert("Заполните все поля!");
+      setModal({
+        text: "Не все поля заполнены",
+        title: "Ошибка",
+        type: "error",
+        active: true,
+      });
       return;
     }
 
@@ -78,6 +95,13 @@ const CreateEvent = () => {
       formData.append("file", image);
       await uploadPhotoByEvenId(session, newEventId, formData);
     }
+
+    setModal({
+      active: true,
+      text: "Событие создано",
+      type: "success",
+      title: "Успешно",
+    });
 
     setData({
       title: "",
@@ -181,6 +205,14 @@ const CreateEvent = () => {
           Создать
         </button>
       </div>
+      {modal.active && (
+        <Popup
+          text={modal.text}
+          title={modal.title}
+          type={modal.type}
+          controller={closeModalController}
+        />
+      )}
     </div>
   );
 };

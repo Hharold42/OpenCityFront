@@ -29,7 +29,9 @@ const AdmUsers = () => {
 
   return (
     <div className="page-wrap">
-      <div className="flex flex-col w-[1000px] px-4 py-2">{users && users}</div>
+      <div className="flex flex-col w-[1000px] px-4 py-2">
+      <label className="ft_title">Пользователи</label>
+        {users && users}</div>
     </div>
   );
 };

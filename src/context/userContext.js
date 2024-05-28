@@ -27,6 +27,7 @@ const UserContextProvider = ({ children }) => {
     session,
     setSession,
     user,
+    setUser
   };
 
   return (

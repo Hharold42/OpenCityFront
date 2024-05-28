@@ -18,11 +18,11 @@ const RenderReport = ({ id, description, user }) => {
   }, [userName, user, session]);
 
   return (
-    <div className="flex flex-row justify-between">
-      <div>{userName}</div>
-      <div>{description}</div>
-      <div>{id}</div>
-    </div>
+    <tr className=" border-b border-white [&>*]:py-2 [&>*]:border [&>*]:border-white [&>*]:p-4">
+      <td >{userName}</td>
+      <td >{description}</td>
+      <td>{id}</td>
+    </tr>
   );
 };
 

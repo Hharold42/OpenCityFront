@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useUser } from "../../context/userContext";
 import { createCommunity } from "../../utils/controllers/communityController";
-import {
-  uploadPhotoByCommunityId,
-  uploadPhotoByEvenId,
-} from "../../utils/controllers/photoController";
+import { uploadPhotoByCommunityId } from "../../utils/controllers/photoController";
+import Popup from "../Popup";
 
 const tags = [
   { value: "0", text: "Танцы" },
@@ -27,6 +25,12 @@ const CreateCommunity = () => {
   });
   const [image, setImage] = useState();
   const [error, setError] = useState();
+  const [modal, setModal] = useState({
+    text: "",
+    title: "",
+    type: "",
+    active: false,
+  });
   const { session } = useUser();
 
   const handleChangeField = (field) => (e) => {
@@ -56,11 +60,20 @@ const CreateCommunity = () => {
     return true;
   };
 
+  const closeModalController = () => {
+    setModal({ ...modal, active: false });
+  };
+
   const confirm = async (e) => {
     e.preventDefault();
 
     if (!isFormComplete()) {
-      alert("Заполните все поля!");
+      setModal({
+        text: "Не все поля заполнены",
+        title: "Ошибка",
+        type: "error",
+        active: true,
+      });
       return;
     }
 
@@ -71,6 +84,13 @@ const CreateCommunity = () => {
       formData.append("file", image);
       await uploadPhotoByCommunityId(session, newCommunityId, formData);
     }
+
+    setModal({
+      active: true,
+      text: "Сообщество создано",
+      type: "success",
+      title: "Успешно",
+    });
 
     setData({
       title: "",
@@ -131,9 +151,17 @@ const CreateCommunity = () => {
           {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
         <button className="ft_button self-start" onClick={confirm}>
-          Зарегистрироваться
+          Создать
         </button>
       </div>
+      {modal.active && (
+        <Popup
+          text={modal.text}
+          title={modal.title}
+          type={modal.type}
+          controller={closeModalController}
+        />
+      )}
     </div>
   );
 };

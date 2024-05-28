@@ -63,15 +63,17 @@ const RenderEvent = ({ item, index, status }) => {
           <div className="flex my-2">
             <p className="bg-[#1A1C28] px-1">{item.tag}</p>
           </div>
-          <div className="flex items-center mt-auto relative">
-            <div
-              className="flex flex-row items-center cursor-pointer [&>*]:mx-2"
-              onClick={() => setShowComplaint(!showComplaint)}
-            >
-              Отправить жалобу
-              <FaFileAlt />
+          {session && (
+            <div className="flex items-center mt-auto relative">
+              <div
+                className="flex flex-row items-center cursor-pointer [&>*]:mx-2"
+                onClick={() => setShowComplaint(!showComplaint)}
+              >
+                Отправить жалобу
+                <FaFileAlt />
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="flex flex-col p-4 border-l border-white">
           {item.description}
@@ -93,11 +95,11 @@ const RenderEvent = ({ item, index, status }) => {
               onChange={(e) => setReportText(e.target.value)}
             />
             <button
-              className=" ft_button self-start flex flex-row"
+              className=" ft_button self-start flex flex-row mt-4 items-center [&>*]:mx-2"
               onClick={report}
             >
-              <FaPaperPlane />
               Отправить
+              <FaPaperPlane />
             </button>
           </div>
         </div>
