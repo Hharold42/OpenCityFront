@@ -95,7 +95,10 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
         key={index}
         className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-4"
       >
-        <div className="bg-white h-full rounded-l-md relative overflow-hidden">
+        <Link
+          to={`/community/${item.id}`}
+          className="bg-white h-full rounded-l-md relative overflow-hidden"
+        >
           {photos && (
             <img
               src={photos}
@@ -103,7 +106,7 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
               className="w-full h-full object-cover z-10"
             />
           )}
-        </div>
+        </Link>
         <div className="flex flex-col text-lg h-full relative">
           <div className="p-4 flex flex-col">
             <div className="text-2xl font-bold mb-2 truncate">{item.title}</div>
@@ -120,7 +123,11 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
           </div>
         </div>
         <div className="flex flex-col border-l border-white h-full">
-          <div className="px-4 py-2 break-words">{item.description}</div>
+          <div className="px-4 py-2 break-words">
+            {item.description.length > 250
+              ? item.description.slice(0, 250) + "..."
+              : item.description}
+          </div>
         </div>
         <div className="flex flex-row justify-end h-full">
           <div className="bg-[#FF6363] flex flex-row rounded-r-md shadow-md text-black font-bold">

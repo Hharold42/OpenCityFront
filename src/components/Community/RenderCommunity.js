@@ -44,7 +44,10 @@ const RenderCommunity = ({ item, index }) => {
         key={index}
         className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-3"
       >
-        <Link to={`/community/${item.id}`} className="bg-white h-full rounded-l-md relative overflow-hidden">
+        <Link
+          to={`/community/${item.id}`}
+          className="bg-white h-full rounded-l-md relative overflow-hidden"
+        >
           {photos && (
             <img
               src={photos}
@@ -84,7 +87,11 @@ const RenderCommunity = ({ item, index }) => {
           </div>
         </div>
         <div className="flex flex-col border-l border-white h-full">
-          <div className="px-4 py-2 break-words">{item.description}</div>
+          <div className="px-4 py-2 break-words">
+            {item.description.length > 250
+              ? item.description.slice(0, 250) + "..."
+              : item.description}
+          </div>
         </div>
       </div>
       <div
@@ -100,7 +107,9 @@ const RenderCommunity = ({ item, index }) => {
               type="text"
               className="ft_input"
               value={reportText}
-              onChange={(e) => e.target.value.length < 255 && setReportText(e.target.value)}
+              onChange={(e) =>
+                e.target.value.length < 255 && setReportText(e.target.value)
+              }
             />
             <button
               className=" ft_button self-start flex flex-row mt-4 items-center [&>*]:mx-2"

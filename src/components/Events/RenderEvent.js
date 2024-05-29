@@ -88,7 +88,11 @@ const RenderEvent = ({ item, index, status }) => {
           )}
         </div>
         <div className="flex flex-col border-l border-white h-full">
-          <div className="px-4 py-2 break-words">{item.description}</div>
+          <div className="px-4 py-2 break-words overflow-y-hidden">
+            {item.description.length > 250
+              ? item.description.slice(0, 250) + "..."
+              : item.description}
+          </div>
         </div>
       </div>
       <div

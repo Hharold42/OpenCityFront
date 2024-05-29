@@ -61,7 +61,6 @@ const DetailEvent = () => {
 
   useEffect(() => {
     if (user && !reports && session && event) {
-
       if (user.role !== "user" || user.id === event.id) {
         getReportsByTypeAndId(session, 0, params.id).then((data) =>
           setReports(
@@ -70,7 +69,7 @@ const DetailEvent = () => {
                 key={index}
                 id={item.id}
                 description={item.description}
-                user={item.user}
+                author={item.user}
               />
             ))
           )
@@ -84,9 +83,12 @@ const DetailEvent = () => {
       {event && user ? (
         <div className="flex flex-col w-[1000px] px-4 py-2">
           <div className="relative z-40 w-full bg-[#2B2D3D] my-2 p-4 rounded-md">
+            <label className="ft_title break-words">
+              Событие "{event.title}"
+            </label>
             <div className="flex flex-row my-4">
               <div
-                className={`w-full max-w-xs min-h-64 h-full mx-auto ${
+                className={`w-full min-h-64 h-full mx-auto ${
                   !photo && "bg-white"
                 } rounded-xl`}
               >
@@ -100,10 +102,7 @@ const DetailEvent = () => {
                   "Отсутствует изображение"
                 )}
               </div>
-              <div className=" ml-4 w-full px-8 py-4 bg-[#11131e7c] rounded-xl break-words max-w-[60%]">
-                <label className="ft_title break-words">
-                  Событие "{event.title}"
-                </label>
+              <div className=" ml-4 w-full px-8 py-4 bg-[#11131e7c] rounded-xl break-words max-w-[40%]">
                 <div className="my-2 bg-[#11131E] w-fit px-2 py-1">
                   {statuses[event.status]}
                 </div>
