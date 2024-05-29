@@ -9,6 +9,11 @@
   .ft_title {
     @apply mb-8 font-bold text-4xl;
   }
+
+  .ft_title-sm {
+    @apply mb-4 font-semibold text-lg;
+  }
+
   .field_max {
     @apply flex flex-col mb-4;
   }
@@ -25,9 +30,18 @@
     @apply bg-[#2FB4FF] px-4 py-2 rounded-md text-xl font-bold;
   }
 
+  .ft_button-red {
+    @apply bg-[#FF6363] px-4 py-2 rounded-md text-xl font-bold;
+  }
+
   .ft_button-sm {
     @apply bg-[#2FB4FF] rounded-md px-2 py-1 text-sm;
   }
+
+  .ft_button-warn {
+    @apply bg-[#ffe573] px-4 py-2 rounded-md text-xl font-bold;
+  }
+
   .email-truncate {
     @apply w-[200px] overflow-hidden whitespace-nowrap text-ellipsis
   }

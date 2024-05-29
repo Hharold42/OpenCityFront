@@ -102,7 +102,10 @@ const RenderAdmEvent = ({ item, index, controller }) => {
         className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-4"
       >
         {/* Левая часть с изображением */}
-        <div className="bg-white h-full rounded-l-md relative overflow-hidden">
+        <Link
+          to={`/events/${item.id}`}
+          className="bg-white h-full rounded-l-md relative overflow-hidden"
+        >
           {photos && (
             <img
               src={photos}
@@ -110,7 +113,7 @@ const RenderAdmEvent = ({ item, index, controller }) => {
               className="w-full h-full object-cover z-10"
             />
           )}
-        </div>
+        </Link>
 
         {/* Средняя часть с информацией */}
         <div className="flex flex-col text-lg h-full relative">
@@ -199,7 +202,9 @@ const RenderAdmEvent = ({ item, index, controller }) => {
               type="text"
               className="ft_input"
               value={reportText}
-              onChange={(e) => e.target.value.length < 254 &&setReportText(e.target.value)}
+              onChange={(e) =>
+                e.target.value.length < 254 && setReportText(e.target.value)
+              }
             />
             <button
               className="ft_button self-start flex flex-row mt-4 items-center [&>*]:mx-2"

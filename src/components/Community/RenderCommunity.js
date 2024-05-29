@@ -7,6 +7,7 @@ import {
 import { FaPaperPlane } from "react-icons/fa6";
 import { createReport } from "../../utils/controllers/reportContorller";
 import { useUser } from "../../context/userContext";
+import { Link } from "react-router-dom";
 
 const RenderCommunity = ({ item, index }) => {
   const [photos, setPhotos] = useState(null);
@@ -43,7 +44,7 @@ const RenderCommunity = ({ item, index }) => {
         key={index}
         className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-3"
       >
-        <div className="bg-white h-full rounded-l-md relative overflow-hidden">
+        <Link to={`/community/${item.id}`} className="bg-white h-full rounded-l-md relative overflow-hidden">
           {photos && (
             <img
               src={photos}
@@ -51,7 +52,7 @@ const RenderCommunity = ({ item, index }) => {
               className="w-full h-full object-cover z-10"
             />
           )}
-        </div>
+        </Link>
         <div className="flex flex-col text-lg h-full relative">
           {/* <div className="px-4 py-2">
             <div className="text-2xl font-bold mb-2 truncate">{item.title}</div>

@@ -8,6 +8,7 @@ import {
 import { FaFileAlt } from "react-icons/fa";
 import { createReport } from "../../utils/controllers/reportContorller";
 import { useUser } from "../../context/userContext";
+import { Link } from "react-router-dom";
 
 const RenderEvent = ({ item, index, status }) => {
   const [photos, setPhotos] = useState(null);
@@ -44,7 +45,10 @@ const RenderEvent = ({ item, index, status }) => {
         key={index}
         className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-3"
       >
-        <div className="bg-white h-full rounded-l-md relative overflow-hidden">
+        <Link
+          to={`/events/${item.id}`}
+          className="bg-white h-full rounded-l-md relative overflow-hidden"
+        >
           {photos && (
             <img
               src={photos}
@@ -52,7 +56,7 @@ const RenderEvent = ({ item, index, status }) => {
               className="w-full h-full object-cover z-10"
             />
           )}
-        </div>
+        </Link>
         <div className="flex flex-col text-lg h-full relative">
           <div className="px-4 py-2">
             <div className="text-2xl font-bold mb-2 truncate">{item.title}</div>
@@ -100,7 +104,9 @@ const RenderEvent = ({ item, index, status }) => {
               type="text"
               className="ft_input"
               value={reportText}
-              onChange={(e) => e.target.value.length < 254 && setReportText(e.target.value)}
+              onChange={(e) =>
+                e.target.value.length < 254 && setReportText(e.target.value)
+              }
             />
             <button
               className=" ft_button self-start flex flex-row mt-4 items-center [&>*]:mx-2"

@@ -20,6 +20,9 @@ import ChangeCommunity from "./components/Community/ChangeCommunity";
 import UserEvents from "./components/Events/UserEvents";
 import UserCommunities from "./components/Community/UserCommunities";
 import AdmUsers from "./components/AdmUsers";
+import DetailEvent from "./components/Events/DetailEvent";
+import DetailCommunity from "./components/Community/DetailCommunity";
+import AdmReports from "./components/Reports/AdmReports";
 
 function App() {
   return (
@@ -30,11 +33,13 @@ function App() {
           <Route path="*" element={<Navigate to="/events" />} />
 
           <Route path="/events" element={<Events />}></Route>
+          <Route path="/events/:id" element={<DetailEvent />} />
           <Route path="/events/create" element={<CreateEvent />} />
           <Route path="/events/user" element={<UserEvents />} />
           <Route path="/events/change/:id" element={<ChangeEvent />} />
 
           <Route path="/community" element={<Community />} />
+          <Route path="/community/:id" element={<DetailCommunity />} />
           <Route path="/community/create" element={<CreateCommunity />} />
           <Route path="/community/user" element={<UserCommunities />} />
           <Route path="/community/change/:id" element={<ChangeCommunity />} />
@@ -44,6 +49,7 @@ function App() {
           <Route path="/myinfo" element={<MyInfo />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/adm/reports" element={<AdmReports />} />
           <Route path="/adm/users" element={<AdmUsers />} />
         </Routes>
       </main>

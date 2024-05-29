@@ -2,16 +2,15 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useUser } from "../../context/userContext";
 import { useEffect, useState } from "react";
 import {
-  deleteEvent,
-  getEventById,
-} from "../../utils/controllers/eventController";
-import {
   getPhotoIdById,
   getPhotoUrlById,
 } from "../../utils/controllers/photoController";
-import parseISO from "../../utils/isoToHuman";
 import { getReportsByTypeAndId } from "../../utils/controllers/reportContorller";
 import RenderReport from "../Reports/RenderReport";
+import {
+  deleteCommunity,
+  getCommunityById,
+} from "../../utils/controllers/communityController";
 
 const statuses = {
   verification: "На верификации",
@@ -20,8 +19,8 @@ const statuses = {
   canceled: "Отменено",
 };
 
-const DetailEvent = () => {
-  const [event, setEvent] = useState(null);
+const DetailCommunity = () => {
+  const [community, setCommunity] = useState(null);
   const [photo, setPhoto] = useState(null);
   const [reports, setReports] = useState(null);
 
@@ -31,23 +30,23 @@ const DetailEvent = () => {
   const { session, user } = useUser();
 
   useEffect(() => {
-    const GE = async () => {
+    const GC = async () => {
       try {
-        const res = await getEventById(session, params.id);
+        const res = await getCommunityById(session, params.id);
 
-        setEvent(res);
+        setCommunity(res);
       } catch (e) {
         console.log(e);
         navigate("/event");
       }
     };
 
-    if (session && !event && params) GE();
-  }, [event, session, params, navigate]);
+    if (session && !community && params) GC();
+  }, [community, session, params, navigate]);
 
   useEffect(() => {
     const fetchPhoto = async () => {
-      const imageId = await getPhotoIdById(params.id, 0);
+      const imageId = await getPhotoIdById(params.id, 1);
 
       if (imageId) {
         await getPhotoUrlById(imageId).then((res) => setPhoto(res));
@@ -60,10 +59,9 @@ const DetailEvent = () => {
   }, [photo, params]);
 
   useEffect(() => {
-    if (user && !reports && session && event) {
-
-      if (user.role !== "user" || user.id === event.id) {
-        getReportsByTypeAndId(session, 0, params.id).then((data) =>
+    if (user && !reports && session && community) {
+      if (user.role !== "user" || user.id === community.id) {
+        getReportsByTypeAndId(session, 1, params.id).then((data) =>
           setReports(
             data.map((item, index) => (
               <RenderReport
@@ -77,11 +75,11 @@ const DetailEvent = () => {
         );
       }
     }
-  }, [user, reports, session, event, params]);
+  }, [user, reports, session, community, params]);
 
   return (
     <div className="page-wrap">
-      {event && user ? (
+      {community && user ? (
         <div className="flex flex-col w-[1000px] px-4 py-2">
           <div className="relative z-40 w-full bg-[#2B2D3D] my-2 p-4 rounded-md">
             <div className="flex flex-row my-4">
@@ -102,41 +100,25 @@ const DetailEvent = () => {
               </div>
               <div className=" ml-4 w-full px-8 py-4 bg-[#11131e7c] rounded-xl break-words max-w-[60%]">
                 <label className="ft_title break-words">
-                  Событие "{event.title}"
+                  Сообщевство "{community.title}"
                 </label>
                 <div className="my-2 bg-[#11131E] w-fit px-2 py-1">
-                  {statuses[event.status]}
+                  {statuses[community.status]}
                 </div>
                 <div className="break-words mb-2">
-                  Адрес:
+                  Контактная информация:
                   <br />
-                  {event.address}
-                </div>
-                <div className="break-words mb-2">
-                  Начало:
-                  <br /> {parseISO(event.datetime_start)}
-                </div>
-                <div className="break-words mb-2">
-                  Окончание:
-                  <br /> {parseISO(event.datetime_end)}
-                </div>
-                <div className="break-words mb-2">
-                  От:
-                  <br /> {event.price_min}
-                </div>
-                <div className="break-words mb-2">
-                  До:
-                  <br /> {event.price_max}
+                  {community.contact_info}
                 </div>
                 <div className="flex my-2">
-                  <p className="bg-[#1A1C28] px-1">{event.tag}</p>
+                  <p className="bg-[#1A1C28] px-1">{community.tag}</p>
                 </div>
               </div>
             </div>
             <div className=" w-full px-8 py-4 bg-[#11131e7c] rounded-xl break-words my-4">
               <label className="ft_title mb-2">Описание</label>
               <br />
-              {event.description}
+              {community.description}
             </div>
             {reports && (
               <div className=" w-full px-8 py-4 bg-[#11131e7c] rounded-xl break-words">
@@ -153,7 +135,7 @@ const DetailEvent = () => {
                 </table>
               </div>
             )}
-            {(user.id === event.user || user.role !== "user") && (
+            {(user.id === community.user || user.role !== "user") && (
               <div className="my-6 flex flex-row justify-between">
                 <Link className="ft_button" to={`/events/change/${params.id}`}>
                   Change
@@ -161,7 +143,7 @@ const DetailEvent = () => {
                 <button
                   className="ft_button-red"
                   onClick={async (e) => {
-                    await deleteEvent(session, params.id);
+                    await deleteCommunity(session, params.id);
                     navigate("/community");
                   }}
                 >
@@ -178,4 +160,4 @@ const DetailEvent = () => {
   );
 };
 
-export default DetailEvent;
+export default DetailCommunity;

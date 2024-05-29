@@ -25,3 +25,17 @@ export const getReportsByTypeAndId = async (token, type, id) => {
     })
     .then((res) => res.data);
 };
+
+export const getAllReports = async (token) => {
+  return await axios
+    .get(`${reportBaseUrl}/getall`, {
+      headers: { token: token },
+    })
+    .then((res) => res.data);
+};
+
+export const deleteReport = async (token, id, entType) => {
+  return await axios.delete(`${reportBaseUrl}/${entType}/${id}`, {
+    headers: { token: token },
+  });
+};

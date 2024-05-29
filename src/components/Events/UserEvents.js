@@ -31,7 +31,7 @@ const UserEvents = () => {
     <div className="page-wrap">
       <div className="flex flex-col w-[1000px] px-4 py-2">
       <label className="ft_title">Мои события</label>
-        <Link className="ft_button self-start mb-4" to="/createEvent">
+        <Link className="ft_button self-start mb-4" to="/events/create">
           Создать
         </Link>
         <select

@@ -54,7 +54,7 @@ const RenderUserEvents = ({ item, index, controller }) => {
         className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-4"
       >
         {/* Левая часть с изображением */}
-        <div className="bg-white h-full rounded-l-md relative">
+        <Link to={`/events/${item.id}`} className="bg-white h-full rounded-l-md relative overflow-hidden">
           {photos && (
             <img
               src={photos}
@@ -62,7 +62,7 @@ const RenderUserEvents = ({ item, index, controller }) => {
               className="w-full h-full object-cover z-10"
             />
           )}
-        </div>
+        </Link>
 
         {/* Средняя часть с информацией */}
         <div className="flex flex-col text-lg h-full relative">
