@@ -60,7 +60,7 @@ const DetailCommunity = () => {
 
   useEffect(() => {
     if (user && !reports && session && community) {
-      if (user.role !== "user" || user.id === community.id) {
+      if (user.role !== "user" || user.id === community.user) {
         getReportsByTypeAndId(session, 1, params.id).then((data) =>
           setReports(
             data.map((item, index) => (

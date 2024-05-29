@@ -61,7 +61,7 @@ const DetailEvent = () => {
 
   useEffect(() => {
     if (user && !reports && session && event) {
-      if (user.role !== "user" || user.id === event.id) {
+      if (user.role !== "user" || user.id === event.user) {
         getReportsByTypeAndId(session, 0, params.id).then((data) =>
           setReports(
             data.map((item, index) => (

@@ -31,7 +31,7 @@ const RenderReport = ({
       <td className="">{author}</td>
       <td className=" break-words">{description}</td>
       <td className="">{id}</td>
-      {del ? (
+      {del && (
         <td
           onClick={() => {
             deleteReport(session, id, entType).then(() => {
@@ -41,8 +41,6 @@ const RenderReport = ({
         >
           <FaX color="#FF6363" />
         </td>
-      ) : (
-        <td></td>
       )}
     </tr>
   );
