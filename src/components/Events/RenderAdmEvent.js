@@ -76,6 +76,9 @@ const RenderAdmEvent = ({ item, index, controller }) => {
               id={item.id}
               description={item.description}
               author={item.user}
+              entType={"event"}
+              del={true}
+              controller={setReports}
             />
           ))
         )
@@ -190,7 +193,7 @@ const RenderAdmEvent = ({ item, index, controller }) => {
             <table className="w-full border-b border-white my-4">
               <thead>
                 <tr className="border-b border-white [&>*]:py-2">
-                  <th>Пользователь</th>
+                  <th>ID пользователя</th>
                   <th>Описание</th>
                   <th>ID</th>
                 </tr>

@@ -69,6 +69,9 @@ const DetailCommunity = () => {
                 id={item.id}
                 description={item.description}
                 author={item.user}
+                entType={"community"}
+                del={true}
+                controller={setReports}
               />
             ))
           )

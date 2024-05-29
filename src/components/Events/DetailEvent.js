@@ -70,6 +70,9 @@ const DetailEvent = () => {
                 id={item.id}
                 description={item.description}
                 author={item.user}
+                entType={"event"}
+                del={true}
+                controller={setReports}
               />
             ))
           )
