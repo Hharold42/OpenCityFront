@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getUserEmailById } from "../../utils/controllers/userController";
 import { useUser } from "../../context/userContext";
-import { FaX } from "react-icons/fa6";
+import { FaDeleteLeft, FaX } from "react-icons/fa6";
 import { deleteReport } from "../../utils/controllers/reportContorller";
 
 const RenderReport = ({
@@ -40,7 +40,7 @@ const RenderReport = ({
             });
           }}
         >
-          <FaX className="text-center items-center w-full" color="#FF6363" />
+          <FaDeleteLeft className="text-center items-center w-full" color="#FF6363" />
         </td>
       )}
     </tr>
