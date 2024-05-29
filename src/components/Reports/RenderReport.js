@@ -27,20 +27,20 @@ const RenderReport = ({
   // }, [userName, author, session]);
 
   return (
-    <tr className=" border-b border-white [&>*]:py-2 [&>*]:border [&>*]:border-white">
+    <tr className=" border-b border-white [&>*]:py-2 [&>*]:border [&>*]:border-white text-center items-center">
       <td className="items-center px-4">{author}</td>
       <td className="items-center px-4 break-all">{description}</td>
       <td className="items-center px-4">{id}</td>
       {del && (
         <td
-          className=" items-center px-4 cursor-pointer"
+          className=" items-center px-4 cursor-pointer text-center"
           onClick={() => {
             deleteReport(session, id, entType).then(() => {
               controller(null);
             });
           }}
         >
-          <FaX color="#FF6363" />
+          <FaX className="text-center items-center w-full" color="#FF6363" />
         </td>
       )}
     </tr>
