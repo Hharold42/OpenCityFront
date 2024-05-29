@@ -14,8 +14,7 @@ const UserContextProvider = ({ children }) => {
       const userData = await getUserByToken(session);
       setUser(userData);
     };
-
-    console.log(session);
+    
     const token = localStorage.getItem("opencity-token");
     if (!session && token) setSession(token);
     if (session && !user) {

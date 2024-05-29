@@ -51,10 +51,10 @@ const RenderUserEvents = ({ item, index, controller }) => {
     <div className="relative h-fit transition-all duration-500">
       <div
         key={index}
-        className="relative z-40 w-full h-[300px] bg-[#2B2D3D] my-2 rounded-md flex flex-row justify-evenly"
+        className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-4"
       >
         {/* Левая часть с изображением */}
-        <div className="bg-white h-full rounded-l-md relative w-full">
+        <div className="bg-white h-full rounded-l-md relative">
           {photos && (
             <img
               src={photos}
@@ -65,50 +65,60 @@ const RenderUserEvents = ({ item, index, controller }) => {
         </div>
 
         {/* Средняя часть с информацией */}
-        <div className="flex flex-col p-4 text-lg w-full">
-          <div className="text-2xl font-bold mb-2">{item.title}</div>
-          <div>Адрес: {item.address}</div>
-          <div>Начало: {parseISO(item.datetime_start)}</div>
-          <div>Окончание: {parseISO(item.datetime_end)}</div>
-          <div>От: {item.price_min}р.</div>
-          <div>До: {item.price_max}р.</div>
-          <div className="flex my-2">
-            <p className="bg-[#1A1C28] px-1">{item.tag}</p>
+        <div className="flex flex-col text-lg h-full relative">
+          <div className="px-4 py-2">
+            <div className="text-2xl font-bold mb-2 truncate">{item.title}</div>
+            <div className="truncate">Адрес: {item.address}</div>
+            <div className="truncate">
+              Начало:
+              <br /> {parseISO(item.datetime_start)}
+            </div>
+            <div className="truncate">
+              Окончание:
+              <br /> {parseISO(item.datetime_end)}
+            </div>
+            <div className="truncate">От: {item.price_min}р.</div>
+            <div className="truncate">До: {item.price_max}р.</div>
+            <div className="flex my-2">
+              <p className="bg-[#1A1C28] px-1 truncate">{item.tag}</p>
+            </div>
           </div>
         </div>
 
         {/* Правая часть с описанием */}
-        <div className="flex flex-col p-4 border-l border-white w-full">
-          {item.description}
+        <div className="flex flex-col border-l border-white h-full">
+          <div className="px-4 py-2 break-words">{item.description}</div>
         </div>
 
         {/* Кнопки управления */}
-        <div className="bg-[#FF6363] flex flex-row rounded-r-md shadow-md text-black font-bold">
-          <div className="bg-[#ffe573] flex flex-row h-full rounded-r-md self-start shadow-md">
-            <div className="bg-[#2FB4FF] flex flex-row h-full rounded-r-md self-start shadow-md">
-              <Link
-                className="px-4 flex items-center"
-                to={`/events/change/${item.id}`}
+        <div className="flex flex-row justify-end h-full">
+          <div className="bg-[#FF6363] flex flex-row rounded-r-md shadow-md text-black font-bold">
+            <div className="bg-[#ffe573] flex flex-row h-full rounded-r-md self-start shadow-md">
+              <div className="bg-[#2FB4FF] flex flex-row h-full rounded-r-md self-start shadow-md">
+                <Link
+                  className="px-4 flex items-center"
+                  to={`/events/change/${item.id}`}
+                >
+                  <RotWord word={"Change"} />
+                </Link>
+              </div>
+              <button
+                className="px-4"
+                onClick={() => setShowComplaint(!showComplaint)}
               >
-                <RotWord word={"Change"} />
-              </Link>
+                <RotWord word={"Report"} />
+              </button>
             </div>
             <button
-              className="px-4"
-              onClick={() => setShowComplaint(!showComplaint)}
+              className="px-4 "
+              onClick={async (e) => {
+                await deleteEvent(session, item.id);
+                controller(null);
+              }}
             >
-              <RotWord word={"Report"} />
+              <RotWord word={"Delete"} />
             </button>
           </div>
-          <button
-            className="px-4 "
-            onClick={async (e) => {
-              await deleteEvent(session, item.id);
-              controller(null);
-            }}
-          >
-            <RotWord word={"Delete"} />
-          </button>
         </div>
       </div>
       <div

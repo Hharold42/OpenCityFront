@@ -2,10 +2,17 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
+import Popup from "./Popup";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [modal, setModal] = useState({
+    text: "",
+    title: "",
+    type: "",
+    active: false,
+  });
 
   const { session, setSession } = useUser();
 
@@ -15,7 +22,7 @@ const Login = () => {
     if (session) navigate("/");
   }, [session, navigate]);
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!email) {
       alert("Пожалуйста введите почту");
       return;
@@ -25,16 +32,31 @@ const Login = () => {
       return;
     }
 
-    axios
-      .post(
-        `http://localhost:8080/api/user/signin?userEmail=${email}&userPassword=${password}`
-      )
-      .then((res) => res.data)
-      .then((data) => {
-        localStorage.setItem("opencity-token", data);
-        setSession(data);
-        navigate("/");
+    try {
+      await axios
+        .post(
+          `http://localhost:8080/api/user/signin?userEmail=${email}&userPassword=${password}`
+        )
+        .then((res) => res.data)
+        .then((data) => {
+          localStorage.setItem("opencity-token", data);
+          setSession(data);
+          navigate("/");
+        });
+    } catch (e) {
+      setModal({
+        text: "Неправильный логин или пароль",
+        title: "Ошибка",
+        type: "error",
+        active: true,
       });
+      setEmail("");
+      setPassword("");
+    }
+  };
+
+  const closeModalController = () => {
+    setModal({ ...modal, active: false });
   };
 
   return (
@@ -63,6 +85,14 @@ const Login = () => {
           Войти
         </button>
       </div>
+      {modal.active && (
+        <Popup
+          text={modal.text}
+          title={modal.title}
+          type={modal.type}
+          controller={closeModalController}
+        />
+      )}
     </div>
   );
 };

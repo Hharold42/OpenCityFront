@@ -10,7 +10,10 @@ import {
 } from "../../utils/controllers/communityController";
 import RotWord from "../RotWord";
 import { Link } from "react-router-dom";
-import { createReport, getReportsByTypeAndId } from "../../utils/controllers/reportContorller";
+import {
+  createReport,
+  getReportsByTypeAndId,
+} from "../../utils/controllers/reportContorller";
 import RenderReport from "../Reports/RenderReport";
 import { FaPaperPlane } from "react-icons/fa6";
 
@@ -89,9 +92,9 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
     <div className="relative h-fit transition-all duration-500">
       <div
         key={index}
-        className="relative z-40 w-full h-[300px] bg-[#2B2D3D] my-2 rounded-md flex flex-row justify-evenly [&>*]:"
+        className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-4"
       >
-        <div className="bg-white h-full rounded-l-md relative w-full">
+        <div className="bg-white h-full rounded-l-md relative overflow-hidden">
           {photos && (
             <img
               src={photos}
@@ -100,57 +103,59 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
             />
           )}
         </div>
-        <div className=" flex flex-col text-lg w-full">
+        <div className="flex flex-col text-lg h-full relative">
           <div className="p-4 flex flex-col">
-            <div className="text-2xl font-bold mb-2">{item.title}</div>
+            <div className="text-2xl font-bold mb-2 truncate">{item.title}</div>
             <div className="flex my-2">
-              <p className="bg-[#1A1C28] px-1">{item.tag}</p>
+              <p className="bg-[#1A1C28] px-1 truncate">{item.tag}</p>
             </div>
           </div>
           <div className="p-4 border-t border-white flex flex-col h-full">
-            <div className=" ">
+            <div className=" truncate">
               Контактная информация:
               <br />
               {item.contact_info}
             </div>
           </div>
         </div>
-        <div className=" flex flex-col p-4 border-l border-white w-full">
-          {item.description}
+        <div className="flex flex-col border-l border-white h-full">
+          <div className="px-4 py-2 break-words">{item.description}</div>
         </div>
-        <div className="bg-[#FF6363] flex flex-row rounded-r-md shadow-md text-black font-bold">
-          <div className="bg-[#ffe573] flex flex-row  h-full rounded-r-md self-start shadow-md">
-            <div className="bg-[#2FB4FF] flex flex-row h-full rounded-r-md self-start shadow-md">
-              {item.status === "verification" && (
-                <div className="bg-[#86FF73] flex flex-row h-full rounded-r-md self-start shadow-md">
-                  <button className="px-4" onClick={verify}>
-                    <RotWord word={"Verify"} />
-                  </button>
-                </div>
-              )}
-              <Link
-                className="px-4 flex items-center"
-                to={`/community/change/${item.id}`}
+        <div className="flex flex-row justify-end h-full">
+          <div className="bg-[#FF6363] flex flex-row rounded-r-md shadow-md text-black font-bold">
+            <div className="bg-[#ffe573] flex flex-row  h-full rounded-r-md self-start shadow-md">
+              <div className="bg-[#2FB4FF] flex flex-row h-full rounded-r-md self-start shadow-md">
+                {item.status === "verification" && (
+                  <div className="bg-[#86FF73] flex flex-row h-full rounded-r-md self-start shadow-md">
+                    <button className="px-4" onClick={verify}>
+                      <RotWord word={"Verify"} />
+                    </button>
+                  </div>
+                )}
+                <Link
+                  className="px-4 flex items-center"
+                  to={`/community/change/${item.id}`}
+                >
+                  <RotWord word={"Change"} />
+                </Link>
+              </div>
+              <button
+                className="px-4 "
+                onClick={() => setShowComplaint(!showComplaint)}
               >
-                <RotWord word={"Change"} />
-              </Link>
+                <RotWord word={"Report"} />
+              </button>
             </div>
             <button
               className="px-4 "
-              onClick={() => setShowComplaint(!showComplaint)}
+              onClick={async (e) => {
+                await deleteCommunity(session, item.id);
+                controller(null);
+              }}
             >
-              <RotWord word={"Report"} />
+              <RotWord word={"Delete"} />
             </button>
           </div>
-          <button
-            className="px-4 "
-            onClick={async (e) => {
-              await deleteCommunity(session, item.id);
-              controller(null);
-            }}
-          >
-            <RotWord word={"Delete"} />
-          </button>
         </div>
       </div>
       <div
@@ -161,14 +166,16 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
       >
         {showReports && (
           <div className="p-4">
-            <div className="field_max text-left">
-              <div className="flex flex-row justify-between border-b border-solid border-white mb-4">
-                <div>Почта пользователя</div>
-                <div>Описание </div>
-                <div>ID</div>
-              </div>
-              {reports && reports}
-            </div>
+            <table className="w-full border-b border-white my-4">
+              <thead>
+                <tr className="border-b border-white [&>*]:py-2">
+                  <th>Пользователь</th>
+                  <th>Описание</th>
+                  <th>ID</th>
+                </tr>
+              </thead>
+              <tbody>{reports && reports}</tbody>
+            </table>
           </div>
         )}
         <div className="p-4">
@@ -178,7 +185,9 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
               type="text"
               className="ft_input"
               value={reportText}
-              onChange={(e) => setReportText(e.target.value)}
+              onChange={(e) =>
+                e.target.value.length < 254 && setReportText(e.target.value)
+              }
             />
             <button
               className=" ft_button self-start flex flex-row mt-4 items-center [&>*]:mx-2"

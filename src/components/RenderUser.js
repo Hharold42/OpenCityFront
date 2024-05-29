@@ -6,6 +6,7 @@ const roles = ["user", "moderator", "admin"];
 
 const RenderUser = ({ controller, data }) => {
   const [role, setRole] = useState(roles.indexOf(data.role));
+  const [showFull, setShowFull] = useState(false);
   const { session } = useUser();
 
   const confirm = async () => {
@@ -15,9 +16,27 @@ const RenderUser = ({ controller, data }) => {
     });
   };
 
+  const handleCover = (e) => {
+    e.stopPropagation();
+
+    setShowFull(true);
+  };
+
+  const handleUncover = (e) => {
+    e.stopPropagation();
+
+    setShowFull(false);
+  };
+
   return (
     <div className="flex flex-row my-4 justify-between [&>*]:w-full [&>*]:items-center [&>*]:mx-8">
-      <div className="email-truncate">{data.email}</div>
+      <div
+        className="email-truncate relative"
+        onMouseOver={handleCover}
+        onMouseOut={handleUncover}
+      >
+        {data.email}
+      </div>
       <div>{data.registationDate}</div>
       <select
         className="ft_input"

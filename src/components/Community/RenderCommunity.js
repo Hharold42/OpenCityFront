@@ -41,9 +41,9 @@ const RenderCommunity = ({ item, index }) => {
     <div className="relative h-fit transition-all duration-500">
       <div
         key={index}
-        className=" relative z-40 w-full h-[300px] bg-[#2B2D3D] my-2 rounded-md flex flex-row justify-evenly [&>*]:w-full"
+        className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-3"
       >
-        <div className="bg-white h-full rounded-l-md relative">
+        <div className="bg-white h-full rounded-l-md relative overflow-hidden">
           {photos && (
             <img
               src={photos}
@@ -52,15 +52,21 @@ const RenderCommunity = ({ item, index }) => {
             />
           )}
         </div>
-        <div className=" flex flex-col text-lg">
-          <div className="p-4 flex flex-col">
-            <div className="text-2xl font-bold mb-2">{item.title}</div>
+        <div className="flex flex-col text-lg h-full relative">
+          {/* <div className="px-4 py-2">
+            <div className="text-2xl font-bold mb-2 truncate">{item.title}</div>
             <div className="flex my-2">
-              <p className="bg-[#1A1C28] px-1">{item.tag}</p>
+              <p className="bg-[#1A1C28] px-1 truncate">{item.tag}</p>
+            </div>
+          </div> */}
+          <div className="p-4 flex flex-col">
+            <div className="text-2xl font-bold mb-2 truncate">{item.title}</div>
+            <div className="flex my-2">
+              <p className="bg-[#1A1C28] px-1 truncate">{item.tag}</p>
             </div>
           </div>
-          <div className="p-4 border-t border-white flex flex-col h-full">
-            <div className=" ">
+          <div className="p-4 border-t border-white flex flex-col h-full bg-[#2a2d3a]">
+            <div className=" truncate">
               Контактная информация:
               <br />
               {item.contact_info}
@@ -76,8 +82,8 @@ const RenderCommunity = ({ item, index }) => {
             )}
           </div>
         </div>
-        <div className=" flex flex-col p-4 border-l border-white">
-          {item.description}
+        <div className="flex flex-col border-l border-white h-full">
+          <div className="px-4 py-2 break-words">{item.description}</div>
         </div>
       </div>
       <div
@@ -93,10 +99,10 @@ const RenderCommunity = ({ item, index }) => {
               type="text"
               className="ft_input"
               value={reportText}
-              onChange={(e) => setReportText(e.target.value)}
+              onChange={(e) => e.target.value.length < 255 && setReportText(e.target.value)}
             />
             <button
-              className=" ft_button self-start flex flex-row mt-4"
+              className=" ft_button self-start flex flex-row mt-4 items-center [&>*]:mx-2"
               onClick={report}
             >
               <FaPaperPlane />

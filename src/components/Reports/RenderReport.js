@@ -18,10 +18,10 @@ const RenderReport = ({ id, description, user }) => {
   }, [userName, user, session]);
 
   return (
-    <tr className=" border-b border-white [&>*]:py-2 [&>*]:border [&>*]:border-white [&>*]:p-4">
-      <td >{userName}</td>
-      <td >{description}</td>
-      <td>{id}</td>
+    <tr className=" border-b border-white [&>*]:py-2 [&>*]:border [&>*]:border-white">
+      <td className="">{userName}</td>
+      <td className=" truncate  ">{description.slice(0,70)}...</td>
+      <td className="">{id}</td>
     </tr>
   );
 };

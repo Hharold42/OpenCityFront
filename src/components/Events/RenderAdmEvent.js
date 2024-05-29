@@ -59,7 +59,7 @@ const RenderAdmEvent = ({ item, index, controller }) => {
     let timeout;
 
     if (showComplaint) {
-      timeout = setTimeout(() => setShowReports(true), 50);
+      timeout = setTimeout(() => setShowReports(true), 150);
     } else {
       if (timeout) clearTimeout(timeout);
       setShowReports(false);
@@ -90,6 +90,7 @@ const RenderAdmEvent = ({ item, index, controller }) => {
       createReport(session, reportText, 0, item.id).then((res) => {
         setShowComplaint(false);
         setReportText("");
+        setReports(null);
       });
     }
   };
@@ -98,10 +99,10 @@ const RenderAdmEvent = ({ item, index, controller }) => {
     <div className="relative h-fit transition-all duration-500">
       <div
         key={index}
-        className="relative z-40 w-full h-[300px] bg-[#2B2D3D] my-2 rounded-md flex flex-row justify-evenly"
+        className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-4"
       >
         {/* Левая часть с изображением */}
-        <div className="bg-white h-full rounded-l-md relative w-full">
+        <div className="bg-white h-full rounded-l-md relative overflow-hidden">
           {photos && (
             <img
               src={photos}
@@ -112,61 +113,67 @@ const RenderAdmEvent = ({ item, index, controller }) => {
         </div>
 
         {/* Средняя часть с информацией */}
-        <div className="flex flex-col p-4 text-lg w-full">
-          <div className="text-2xl font-bold mb-2">{item.title}</div>
-          <div>Адрес: {item.address}</div>
-          <div>Начало: {parseISO(item.datetime_start)}</div>
-          <div>Окончание: {parseISO(item.datetime_end)}</div>
-          <div>От: {item.price_min}р.</div>
-          <div>До: {item.price_max}р.</div>
-          <div className="flex my-2">
-            <p className="bg-[#1A1C28] px-1">{item.tag}</p>
+        <div className="flex flex-col text-lg h-full relative">
+          <div className="px-4 py-2">
+            <div className="text-2xl font-bold mb-2 truncate">{item.title}</div>
+            <div className="truncate">Адрес: {item.address}</div>
+            <div className="truncate">
+              Начало:
+              <br /> {parseISO(item.datetime_start)}
+            </div>
+            <div className="truncate">
+              Окончание:
+              <br /> {parseISO(item.datetime_end)}
+            </div>
+            <div className="truncate">От: {item.price_min}р.</div>
+            <div className="truncate">До: {item.price_max}р.</div>
+            <div className="flex my-2">
+              <p className="bg-[#1A1C28] px-1 truncate">{item.tag}</p>
+            </div>
           </div>
         </div>
 
         {/* Правая часть с описанием */}
-        <div className="flex flex-col p-4 border-l border-white w-full">
-          {item.description}
+        <div className="flex flex-col border-l border-white h-full">
+          <div className="px-4 py-2 break-words">{item.description}</div>
         </div>
 
         {/* Кнопки управления */}
-        <div className="bg-[#FF6363] flex flex-row rounded-r-md shadow-md text-black font-bold">
-          <div className="bg-[#ffe573] flex flex-row  h-full rounded-r-md self-start shadow-md">
-            <div className="bg-[#2FB4FF] flex flex-row h-full rounded-r-md self-start shadow-md">
-              {item.status === "verification" && (
-                <div className="bg-[#86FF73] flex flex-row h-full rounded-r-md self-start shadow-md">
-                  <button className="px-4" onClick={verify}>
-                    <RotWord word={"Verify"} />
-                  </button>
-                </div>
-              )}
-              <Link
-                className="px-4 flex items-center"
-                to={`/events/change/${item.id}`}
-              >
-                <RotWord word={"Change"} />
-              </Link>
-            </div>
+        <div className="flex flex-row justify-end h-full">
+          <div className="bg-[#FF6363] flex flex-row rounded-r-md shadow-md text-black font-bold h-auto">
+            {item.status === "verification" && (
+              <div className="bg-[#86FF73] flex flex-row h-full rounded-r-md self-start shadow-md w-full">
+                <button className="px-4" onClick={verify}>
+                  <RotWord word={"Verify"} />
+                </button>
+              </div>
+            )}
+            <Link
+              className="px-4 flex flex-row items-center bg-[#2FB4FF] h-full rounded-r-md shadow-md w-full"
+              to={`/events/change/${item.id}`}
+            >
+              <RotWord word={"Change"} />
+            </Link>
             <button
-              className="px-4"
+              className="px-4 bg-[#ffe573] h-full rounded-r-md shadow-md"
               onClick={() => setShowComplaint(!showComplaint)}
             >
               <RotWord word={"Report"} />
             </button>
+            <button
+              className="px-4 bg-[#FF6363] h-full rounded-r-md shadow-md w-full"
+              onClick={async (e) => {
+                await deleteEvent(session, item.id);
+                controller(null);
+              }}
+            >
+              <RotWord word={"Delete"} />
+            </button>
           </div>
-          <button
-            className="px-4 "
-            onClick={async (e) => {
-              await deleteEvent(session, item.id);
-              controller(null);
-            }}
-          >
-            <RotWord word={"Delete"} />
-          </button>
         </div>
       </div>
       <div
-        className={` left-0 right-0 bg-[#11131E] rounded-b-md transition-transform duration-500 ease-in-out transform ${
+        className={`left-0 right-0 bg-[#11131E] rounded-b-md transition-transform duration-500 ease-in-out transform ${
           showComplaint ? "-translate-y-2" : "-translate-y-full absolute"
         } z-30`}
         style={{ top: "100%" }}
@@ -175,7 +182,7 @@ const RenderAdmEvent = ({ item, index, controller }) => {
           <div className="p-4">
             <table className="w-full border-b border-white my-4">
               <thead>
-                <tr className=" border-b border-white [&>*]:py-2">
+                <tr className="border-b border-white [&>*]:py-2">
                   <th>Пользователь</th>
                   <th>Описание</th>
                   <th>ID</th>
@@ -192,10 +199,10 @@ const RenderAdmEvent = ({ item, index, controller }) => {
               type="text"
               className="ft_input"
               value={reportText}
-              onChange={(e) => setReportText(e.target.value)}
+              onChange={(e) => e.target.value.length < 254 &&setReportText(e.target.value)}
             />
             <button
-              className=" ft_button self-start flex flex-row mt-4 items-center [&>*]:mx-2"
+              className="ft_button self-start flex flex-row mt-4 items-center [&>*]:mx-2"
               onClick={report}
             >
               Отправить

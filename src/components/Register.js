@@ -2,12 +2,19 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/userContext";
+import Popup from "./Popup";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [modal, setModal] = useState({
+    text: "",
+    title: "",
+    type: "",
+    active: false,
+  });
 
-  const { session, setSession } = useUser();
+  const { session, setSession, setUser } = useUser();
 
   const navigate = useNavigate();
 
@@ -15,7 +22,7 @@ const Register = () => {
     if (session) navigate("/");
   }, [session, navigate]);
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!email) {
       alert("Пожалуйста введите почту");
       return;
@@ -30,14 +37,48 @@ const Register = () => {
       password: password,
     };
 
-    axios
-      .post("http://localhost:8080/api/user/create", data)
-      .then((res) => res.data)
-      .then((data) => {
-        localStorage.setItem("opencity-token", data);
-        setSession(data);
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/user/create",
+        data
+      );
+      // .then((res) => res)
+      // .then((data) => {
+      //   localStorage.setItem("opencity-token", data);
+      //   setSession(data);
+      //   navigate("/");
+      // });
+
+      if (res.status === 409) {
+        setModal({
+          text: "Такой пользователь уже существует",
+          title: "Ошибка",
+          type: "error",
+          active: true,
+        });
+        setEmail("");
+      } else {
+        
+
+
+        localStorage.setItem("opencity-token", res.data);
+        setSession(res.data);
         navigate("/");
+        // setUser(null);
+      }
+    } catch (e) {
+      setModal({
+        text: "Такой пользователь уже существует",
+        title: "Ошибка",
+        type: "error",
+        active: true,
       });
+      setEmail("");
+    }
+  };
+
+  const closeModalController = () => {
+    setModal({ ...modal, active: false });
   };
 
   return (
@@ -66,6 +107,14 @@ const Register = () => {
           Зарегистрироваться
         </button>
       </div>
+      {modal.active && (
+        <Popup
+          text={modal.text}
+          title={modal.title}
+          type={modal.type}
+          controller={closeModalController}
+        />
+      )}
     </div>
   );
 };

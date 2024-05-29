@@ -47,6 +47,9 @@ const ChangeCommunity = () => {
   }, [data, params, session, user, navigate]);
 
   const handleChangeField = (field) => (e) => {
+    if (e.target.value.length > 254) {
+      return;
+    }
     setData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 

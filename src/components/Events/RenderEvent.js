@@ -42,9 +42,9 @@ const RenderEvent = ({ item, index, status }) => {
     <div className="relative h-fit transition-all duration-500">
       <div
         key={index}
-        className=" relative z-40 w-full h-[300px] bg-[#2B2D3D] my-2 rounded-md flex flex-row justify-evenly [&>*]:w-full"
+        className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-3"
       >
-        <div className="bg-white h-full rounded-l-md relative">
+        <div className="bg-white h-full rounded-l-md relative overflow-hidden">
           {photos && (
             <img
               src={photos}
@@ -53,20 +53,28 @@ const RenderEvent = ({ item, index, status }) => {
             />
           )}
         </div>
-        <div className="flex flex-col p-4 text-lg">
-          <div className="text-2xl font-bold mb-2">{item.title}</div>
-          <div>Адрес: {item.address}</div>
-          <div>Начало: {parseISO(item.datetime_start)}</div>
-          <div>Окончание: {parseISO(item.datetime_end)}</div>
-          <div>От: {item.price_min}р.</div>
-          <div>До: {item.price_max}р.</div>
-          <div className="flex my-2">
-            <p className="bg-[#1A1C28] px-1">{item.tag}</p>
+        <div className="flex flex-col text-lg h-full relative">
+          <div className="px-4 py-2">
+            <div className="text-2xl font-bold mb-2 truncate">{item.title}</div>
+            <div className="truncate">Адрес: {item.address}</div>
+            <div className="truncate">
+              Начало:
+              <br /> {parseISO(item.datetime_start)}
+            </div>
+            <div className="truncate">
+              Окончание:
+              <br /> {parseISO(item.datetime_end)}
+            </div>
+            <div className="truncate">От: {item.price_min}р.</div>
+            <div className="truncate">До: {item.price_max}р.</div>
+            <div className="flex my-2">
+              <p className="bg-[#1A1C28] px-1 truncate">{item.tag}</p>
+            </div>
           </div>
           {session && (
             <div className="flex items-center mt-auto relative">
               <div
-                className="flex flex-row items-center cursor-pointer [&>*]:mx-2"
+                className="flex flex-row items-center cursor-pointer [&>*]:mx-2 px-4 py-2"
                 onClick={() => setShowComplaint(!showComplaint)}
               >
                 Отправить жалобу
@@ -75,8 +83,8 @@ const RenderEvent = ({ item, index, status }) => {
             </div>
           )}
         </div>
-        <div className="flex flex-col p-4 border-l border-white">
-          {item.description}
+        <div className="flex flex-col border-l border-white h-full">
+          <div className="px-4 py-2 break-words">{item.description}</div>
         </div>
       </div>
       <div
@@ -92,7 +100,7 @@ const RenderEvent = ({ item, index, status }) => {
               type="text"
               className="ft_input"
               value={reportText}
-              onChange={(e) => setReportText(e.target.value)}
+              onChange={(e) => e.target.value.length < 254 && setReportText(e.target.value)}
             />
             <button
               className=" ft_button self-start flex flex-row mt-4 items-center [&>*]:mx-2"

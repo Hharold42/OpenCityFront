@@ -31,7 +31,24 @@
   .email-truncate {
     @apply w-[200px] overflow-hidden whitespace-nowrap text-ellipsis
   }
+
+  .descr-sm {
+    @apply flex flex-col p-4 border-l border-white 
+  }
+
 }
+
+.turn-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* .truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+} */
 
 /* width */
 ::-webkit-scrollbar {

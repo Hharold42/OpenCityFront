@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 
 const ChangeEmail = () => {
-  const [oldEmail, setOldEmail] = useState();
   const [newEmail, setNewEmail] = useState();
   const [modal, setModal] = useState({
     text: "",
@@ -18,13 +17,13 @@ const ChangeEmail = () => {
     setModal({ ...modal, active: false });
   };
 
-  const { session, setSession, user } = useUser();
+  const { session, setSession, user, setUser } = useUser();
   const navigate = useNavigate();
 
   const confirm = async () => {
-    console.log(user);
-    if (oldEmail && newEmail) {
-      if (oldEmail === newEmail) {
+    if (newEmail) {
+      console.log(newEmail, user.email);
+      if (user.email === newEmail) {
         setModal({
           text: "Старый и новый email не должны совпадать",
           title: "Ошибка",
@@ -34,48 +33,27 @@ const ChangeEmail = () => {
         return;
       }
 
-      if (oldEmail !== user.email) {
-        setModal({
-          text: "Старый email не совпадает с вашим текущим email",
-          title: "Ошибка",
-          type: "error",
-          active: true,
-        });
-        return;
-      }
+      const res = await changeEmail(session, user.email, newEmail);
 
-      const res = await changeEmail(session, oldEmail, newEmail);
-      if (res.split("$")[0] === newEmail) {
-        localStorage.removeItem("opencity-token");
-        setSession("");
-        setModal({
-          active: true,
-          text: "Email изменен успешно",
-          type: "success",
-          title: "Успешно",
-        });
-        setTimeout(() => {
-          navigate("/login");
-        }, 3000);
-      } else {
-        alert(res);
-      }
+      localStorage.removeItem("opencity-token");
+      setSession("");
+      setModal({
+        active: true,
+        text: "Email изменен успешно",
+        type: "success",
+        title: "Успешно",
+      });
+      setTimeout(() => {
+        setUser(null);
+        navigate("/login");
+      }, 3000);
     }
   };
 
   return (
     <div className="page-wrap">
       <div className="flex flex-col w-[1000px] px-4 py-2">
-      <label className="ft_title">Изменить электроннуй почту</label>
-        <div className="field_max">
-          <label className="ft_field-label">Старый Email:</label>
-          <input
-            type="text"
-            className="ft_input"
-            value={oldEmail}
-            onChange={(e) => setOldEmail(e.target.value)}
-          />
-        </div>
+        <label className="ft_title">Изменить электроннуй почту</label>
         <div className="field_max">
           <label className="ft_field-label">Новый Email:</label>
           <input

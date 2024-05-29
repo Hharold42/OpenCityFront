@@ -27,6 +27,7 @@ const ChangeEvent = () => {
   const [data, setData] = useState(null);
   const [image, setImage] = useState();
   const [error, setError] = useState();
+  
   const { session, user } = useUser();
 
   useEffect(() => {
@@ -52,6 +53,9 @@ const ChangeEvent = () => {
   }, [data, params, session, user, navigate]);
 
   const handleChangeField = (field) => (e) => {
+    if (e.target.value.length > 254) {
+      return;
+    }
     setData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
