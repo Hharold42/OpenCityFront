@@ -69,7 +69,7 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
               key={index}
               id={item.id}
               description={item.description}
-              user={item.user}
+              author={item.user}
             />
           ))
         )
@@ -81,9 +81,10 @@ const RenderAdmCommunity = ({ item, index, controller }) => {
 
   const report = () => {
     if (reportText.length > 0) {
-      createReport(session, reportText, 0, item.id).then((res) => {
+      createReport(session, reportText, 1, item.id).then((res) => {
         setShowComplaint(false);
         setReportText("");
+        setReports(null);
       });
     }
   };

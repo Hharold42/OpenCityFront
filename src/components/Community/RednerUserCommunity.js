@@ -19,7 +19,7 @@ const RednerUserCommunity = ({ item, index, controller }) => {
 
   useEffect(() => {
     const fetchPhoto = async () => {
-      const imageId = await getPhotoIdById(item.id, 0);
+      const imageId = await getPhotoIdById(item.id, 1);
 
       if (imageId) await getPhotoUrlById(imageId).then((res) => setPhotos(res));
     };
@@ -36,7 +36,10 @@ const RednerUserCommunity = ({ item, index, controller }) => {
               key={index}
               id={item.id}
               description={item.description}
-              user={item.user}
+              author={item.user}
+              del={true}
+              controller={setReports}
+              entType={"community"}
             />
           ))
         )

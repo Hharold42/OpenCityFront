@@ -30,7 +30,7 @@ const RenderAdmEvent = ({ item, index, controller }) => {
 
   useEffect(() => {
     const fetchPhoto = async () => {
-      const imageId = await getPhotoIdById(item.id, 1);
+      const imageId = await getPhotoIdById(item.id, 0);
       if (imageId) await getPhotoUrlById(imageId).then((res) => setPhotos(res));
       else setPhotos(false);
     };
@@ -75,7 +75,7 @@ const RenderAdmEvent = ({ item, index, controller }) => {
               key={index}
               id={item.id}
               description={item.description}
-              user={item.user}
+              author={item.user}
             />
           ))
         )

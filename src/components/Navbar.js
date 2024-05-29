@@ -21,6 +21,7 @@ function Navbar() {
         {user && ["admin"].includes(user.role) && (
           <Link to="/adm/users">Users</Link>
         )}
+        {user && user.role !== "user" && <Link to="/adm/reports">Reports</Link>}
         {session ? (
           <div className="flex flex-row text-xl [&>*]:mx-2">
             <Link to="/myInfo">{user ? user.email : "My Info"}</Link>

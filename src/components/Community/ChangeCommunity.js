@@ -10,6 +10,7 @@ import {
   getPhotoIdById,
   uploadPhotoByEvenId,
 } from "../../utils/controllers/photoController";
+import Popup from "../Popup";
 
 const statuses = {
   verification: 0,
@@ -21,6 +22,16 @@ const statuses = {
 const ChangeCommunity = () => {
   const params = useParams();
   const navigate = useNavigate();
+  const [modal, setModal] = useState({
+    text: "",
+    title: "",
+    type: "",
+    active: false,
+  });
+
+  const closeModalController = () => {
+    setModal({ ...modal, active: false });
+  };
 
   const [data, setData] = useState(null);
   const [image, setImage] = useState();
@@ -47,9 +58,6 @@ const ChangeCommunity = () => {
   }, [data, params, session, user, navigate]);
 
   const handleChangeField = (field) => (e) => {
-    if (e.target.value.length > 254) {
-      return;
-    }
     setData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
@@ -79,7 +87,12 @@ const ChangeCommunity = () => {
 
   const confirm = async (e) => {
     if (!isFormComplete()) {
-      alert("Заполните все поля!");
+      setModal({
+        text: "Не все поля заполнены",
+        title: "Ошибка",
+        type: "error",
+        active: true,
+      });
       return;
     }
 
@@ -90,8 +103,15 @@ const ChangeCommunity = () => {
       status: data.status,
     });
 
+    setModal({
+      active: true,
+      text: "Сообщество изменено",
+      type: "success",
+      title: "Успешно",
+    });
+
     if (image) {
-      const uploadedPhotoId = await getPhotoIdById(params.id, 0);
+      const uploadedPhotoId = await getPhotoIdById(params.id, 1);
       if (uploadedPhotoId) {
         await deletePhotoById(uploadedPhotoId);
       }
@@ -107,7 +127,7 @@ const ChangeCommunity = () => {
     <div className="page-wrap">
       {data ? (
         <div className="flex flex-col w-[1000px] px-4 py-2">
-          <label className="ft_title">Изменить событие "{data.title}"</label>
+          <label className="ft_title truncate">Изменить сообщество "{data.title}"</label>
           <div className="field_max">
             <label className="ft_field-label">Название:</label>
             <input
@@ -162,6 +182,14 @@ const ChangeCommunity = () => {
         </div>
       ) : (
         "Загрузка..."
+      )}
+      {modal.active && (
+        <Popup
+          text={modal.text}
+          title={modal.title}
+          type={modal.type}
+          controller={closeModalController}
+        />
       )}
     </div>
   );

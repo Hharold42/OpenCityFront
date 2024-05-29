@@ -37,7 +37,10 @@ const RenderUserEvents = ({ item, index, controller }) => {
               key={index}
               id={item.id}
               description={item.description}
-              user={item.user}
+              author={item.user}
+              del={true}
+              controller={setReports}
+              entType={"event"}
             />
           ))
         )
@@ -54,7 +57,10 @@ const RenderUserEvents = ({ item, index, controller }) => {
         className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-4"
       >
         {/* Левая часть с изображением */}
-        <Link to={`/events/${item.id}`} className="bg-white h-full rounded-l-md relative overflow-hidden">
+        <Link
+          to={`/events/${item.id}`}
+          className="bg-white h-full rounded-l-md relative overflow-hidden"
+        >
           {photos && (
             <img
               src={photos}

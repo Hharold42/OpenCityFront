@@ -1,27 +1,42 @@
 import React, { useEffect, useState } from "react";
 import { getUserEmailById } from "../../utils/controllers/userController";
 import { useUser } from "../../context/userContext";
+import { FaX } from "react-icons/fa6";
+import { deleteReport } from "../../utils/controllers/reportContorller";
 
-const RenderReport = ({ id, description, user }) => {
+const RenderReport = ({ id, description, author, del = false, controller, entType }) => {
   const [userName, setUserName] = useState("");
 
   const { session } = useUser();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await getUserEmailById(session, user);
+      const res = await getUserEmailById(session, author);
 
       setUserName(res);
     };
 
     if (!userName && session) fetchUser();
-  }, [userName, user, session]);
+  }, [userName, author, session]);
 
   return (
     <tr className=" border-b border-white [&>*]:py-2 [&>*]:border [&>*]:border-white">
       <td className="">{userName}</td>
-      <td className=" truncate  ">{description.slice(0,70)}...</td>
+      <td className=" truncate  ">{description.slice(0, 70)}...</td>
       <td className="">{id}</td>
+      {del ? (
+        <td
+          onClick={() => {
+            deleteReport(session, id, entType).then(() => {
+              controller(null)
+            });
+          }}
+        >
+          <FaX color="#FF6363" />
+        </td>
+      ) : (
+        <td></td>
+      )}
     </tr>
   );
 };

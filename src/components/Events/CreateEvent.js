@@ -39,9 +39,6 @@ const CreateEvent = () => {
   const { session } = useUser();
 
   const handleChangeField = (field) => (e) => {
-    if (e.target.value.length > 254) {
-      return;
-    }
     setData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 

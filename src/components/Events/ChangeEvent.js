@@ -12,6 +12,7 @@ import {
   uploadPhotoByEvenId,
 } from "../../utils/controllers/photoController";
 import formatDateToISOString from "../../utils/dateToISOString";
+import Popup from "../Popup";
 
 const statuses = {
   verification: 0,
@@ -27,7 +28,17 @@ const ChangeEvent = () => {
   const [data, setData] = useState(null);
   const [image, setImage] = useState();
   const [error, setError] = useState();
-  
+  const [modal, setModal] = useState({
+    text: "",
+    title: "",
+    type: "",
+    active: false,
+  });
+
+  const closeModalController = () => {
+    setModal({ ...modal, active: false });
+  };
+
   const { session, user } = useUser();
 
   useEffect(() => {
@@ -53,9 +64,6 @@ const ChangeEvent = () => {
   }, [data, params, session, user, navigate]);
 
   const handleChangeField = (field) => (e) => {
-    if (e.target.value.length > 254) {
-      return;
-    }
     setData((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
@@ -85,7 +93,12 @@ const ChangeEvent = () => {
 
   const confirm = async (e) => {
     if (!isFormComplete()) {
-      alert("Заполните все поля!");
+      setModal({
+        text: "Не все поля заполнены",
+        title: "Ошибка",
+        type: "error",
+        active: true,
+      });
       return;
     }
 
@@ -98,6 +111,13 @@ const ChangeEvent = () => {
       price_min: data.price_min,
       price_max: data.price_max,
       status: data.status,
+    });
+
+    setModal({
+      active: true,
+      text: "Событие изменено",
+      type: "success",
+      title: "Успешно",
     });
 
     if (image) {
@@ -207,6 +227,14 @@ const ChangeEvent = () => {
         </div>
       ) : (
         "Загрузка..."
+      )}
+      {modal.active && (
+        <Popup
+          text={modal.text}
+          title={modal.title}
+          type={modal.type}
+          controller={closeModalController}
+        />
       )}
     </div>
   );
