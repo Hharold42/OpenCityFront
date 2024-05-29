@@ -108,7 +108,7 @@ const RenderCommunity = ({ item, index }) => {
               className="ft_input"
               value={reportText}
               onChange={(e) =>
-                e.target.value.length < 255 && setReportText(e.target.value)
+                 setReportText(e.target.value)
               }
             />
             <button

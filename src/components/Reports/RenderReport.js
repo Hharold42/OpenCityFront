@@ -28,11 +28,12 @@ const RenderReport = ({
 
   return (
     <tr className=" border-b border-white [&>*]:py-2 [&>*]:border [&>*]:border-white">
-      <td className="">{author}</td>
-      <td className=" break-words">{description}</td>
-      <td className="">{id}</td>
+      <td className="items-center px-4">{author}</td>
+      <td className="items-center px-4 break-all">{description}</td>
+      <td className="items-center px-4">{id}</td>
       {del && (
         <td
+          className=" items-center px-4 cursor-pointer"
           onClick={() => {
             deleteReport(session, id, entType).then(() => {
               controller(null);

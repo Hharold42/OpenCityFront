@@ -109,7 +109,7 @@ const RenderEvent = ({ item, index, status }) => {
               className="ft_input"
               value={reportText}
               onChange={(e) =>
-                e.target.value.length < 254 && setReportText(e.target.value)
+                 setReportText(e.target.value)
               }
             />
             <button

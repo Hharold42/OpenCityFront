@@ -193,7 +193,7 @@ const RenderAdmEvent = ({ item, index, controller }) => {
             <table className="w-full border-b border-white my-4">
               <thead>
                 <tr className="border-b border-white [&>*]:py-2">
-                  <th>ID пользователя</th>
+                  <th className="w-[148px]">ID пользователя</th>
                   <th>Описание</th>
                   <th>ID</th>
                 </tr>
@@ -210,7 +210,7 @@ const RenderAdmEvent = ({ item, index, controller }) => {
               className="ft_input"
               value={reportText}
               onChange={(e) =>
-                e.target.value.length < 254 && setReportText(e.target.value)
+                 setReportText(e.target.value)
               }
             />
             <button

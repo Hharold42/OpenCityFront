@@ -146,7 +146,7 @@ const DetailEvent = () => {
                 <table className="w-full border-b border-white my-4">
                   <thead>
                     <tr className="border-b border-white [&>*]:py-2">
-                      <th>Пользователь</th>
+                      <th className="w-[148px]">ID пользователя</th>
                       <th>Описание</th>
                       <th>ID</th>
                     </tr>
