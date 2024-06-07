@@ -19,6 +19,18 @@ const statuses = {
   canceled: 3,
 };
 
+const tags = [
+  { value: "0", text: "Танцы" },
+  { value: "1", text: "Вокал" },
+  { value: "2", text: "Музыка" },
+  { value: "3", text: "Настолки" },
+  { value: "4", text: "Фестиваль" },
+  { value: "5", text: "Спорт" },
+  { value: "6", text: "Интелектуальное соревнование" },
+  { value: "7", text: "Культура" },
+  { value: "8", text: "Другое" },
+];
+
 const ChangeCommunity = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -127,7 +139,9 @@ const ChangeCommunity = () => {
     <div className="page-wrap">
       {data ? (
         <div className="flex flex-col w-[1000px] px-4 py-2">
-          <label className="ft_title truncate">Изменить сообщество "{data.title}"</label>
+          <label className="ft_title truncate">
+            Изменить сообщество "{data.title}"
+          </label>
           <div className="field_max">
             <label className="ft_field-label">Название:</label>
             <input
@@ -154,6 +168,20 @@ const ChangeCommunity = () => {
               value={data.contact_info}
               onChange={handleChangeField("contact_info")}
             />
+          </div>
+          <div className="field_max">
+            <label className="ft_field-label">Тэг:</label>
+            <select
+              className="ft_input"
+              value={data.tag}
+              onChange={handleChangeField("tag")}
+            >
+              {tags.map((tag, index) => (
+                <option key={index} value={tag.value}>
+                  {tag.text}
+                </option>
+              ))}
+            </select>
           </div>
           {user && user.role !== "user" && (
             <div className="field_max">

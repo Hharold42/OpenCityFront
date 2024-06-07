@@ -37,16 +37,18 @@ const ChangeEmail = () => {
 
       localStorage.removeItem("opencity-token");
       setSession("");
-      setModal({
-        active: true,
-        text: "Email изменен успешно",
-        type: "success",
-        title: "Успешно",
-      });
-      setTimeout(() => {
-        setUser(null);
-        navigate("/login");
-      }, 3000);
+      setUser(null);
+      navigate("/login");
+      // setModal({
+      //   active: true,
+      //   text: "Email изменен успешно",
+      //   type: "success",
+      //   title: "Успешно",
+      // });
+      // setTimeout(() => {
+      //   setUser(null);
+      //   navigate("/login");
+      // }, 3000);
     }
   };
 

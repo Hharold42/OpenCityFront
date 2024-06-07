@@ -21,6 +21,18 @@ const statuses = {
   canceled: 3,
 };
 
+const tags = [
+  { value: "0", text: "Танцы" },
+  { value: "1", text: "Вокал" },
+  { value: "2", text: "Музыка" },
+  { value: "3", text: "Настолки" },
+  { value: "4", text: "Фестиваль" },
+  { value: "5", text: "Спорт" },
+  { value: "6", text: "Интелектуальное соревнование" },
+  { value: "7", text: "Культура" },
+  { value: "8", text: "Другое" },
+];
+
 const ChangeEvent = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -101,6 +113,10 @@ const ChangeEvent = () => {
       });
       return;
     }
+
+    console.log(data.datetime_start);
+    console.log(new Date(data.datetime_start));
+    console.log(formatDateToISOString(new Date(data.datetime_start)));
 
     await updateEvent(session, params.id, {
       title: data.title,
@@ -200,6 +216,20 @@ const ChangeEvent = () => {
               value={data.price_max}
               onChange={handleChangeField("price_max")}
             />
+          </div>
+          <div className="field_max">
+            <label className="ft_field-label">Тэг:</label>
+            <select
+              className="ft_input"
+              value={data.tag}
+              onChange={handleChangeField("tag")}
+            >
+              {tags.map((tag, index) => (
+                <option key={index} value={tag.value}>
+                  {tag.text}
+                </option>
+              ))}
+            </select>
           </div>
           {user && user.role !== "user" && (
             <div className="field_max">

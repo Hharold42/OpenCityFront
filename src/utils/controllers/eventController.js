@@ -29,6 +29,7 @@ export const getEventById = async (token, id) => {
 };
 
 export const updateEvent = async (token, id, updatedEvent) => {
+
   return await axios
     .put(`${eventBaseUrl}/update/${id}`, updatedEvent, {
       headers: {
