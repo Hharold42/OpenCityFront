@@ -5,10 +5,10 @@ export default function formatDateToISOString(date) {
   const day = String(date.getDate()).padStart(2, "0");
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");
-  const seconds = String(date.getSeconds()).padStart(2, "0");
+  // const seconds = String(date.getSeconds()).padStart(2, "0");
 
   // Format the date and time as desired
-  const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
 
   return formattedDate;
 }
