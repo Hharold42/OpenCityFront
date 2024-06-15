@@ -18,12 +18,9 @@ export const getAllEventsByStatus = async (token, status) => {
     .then((res) => res.data);
 };
 
-export const getEventById = async (token, id) => {
+export const getEventById = async ( id) => {
   return await axios
     .get(`${eventBaseUrl}/get/${id}`, {
-      headers: {
-        token: token,
-      },
     })
     .then((res) => res.data);
 };

@@ -33,17 +33,15 @@ const DetailEvent = () => {
   useEffect(() => {
     const GE = async () => {
       try {
-        const res = await getEventById(session, params.id);
-
+        const res = await getEventById(params.id);
         setEvent(res);
       } catch (e) {
-        console.log(e);
         navigate("/event");
       }
     };
 
-    if (session && !event && params) GE();
-  }, [event, session, params, navigate]);
+    if (!event && params) GE();
+  }, [event, params, navigate]);
 
   useEffect(() => {
     const fetchPhoto = async () => {
@@ -60,7 +58,7 @@ const DetailEvent = () => {
   }, [photo, params]);
 
   useEffect(() => {
-    if (user && !reports && session && event) {
+    if (user && !reports && event) {
       if (user.role !== "user" || user.id === event.user) {
         getReportsByTypeAndId(session, 0, params.id).then((data) =>
           setReports(
@@ -83,7 +81,7 @@ const DetailEvent = () => {
 
   return (
     <div className="page-wrap">
-      {event && user ? (
+      {event ? (
         <div className="flex flex-col w-[1000px] px-4 py-2">
           <div className="relative z-40 w-full bg-[#2B2D3D] my-2 p-4 rounded-md">
             <label className="ft_title break-words">
@@ -155,7 +153,7 @@ const DetailEvent = () => {
                 </table>
               </div>
             )}
-            {(user.id === event.user || user.role !== "user") && (
+            {user && (user.id === event.user || user.role !== "user") && (
               <div className="my-6 flex flex-row justify-between">
                 <Link className="ft_button" to={`/events/change/${params.id}`}>
                   Change

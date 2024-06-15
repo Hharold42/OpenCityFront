@@ -52,7 +52,7 @@ const ChangeCommunity = () => {
 
   useEffect(() => {
     const fetchEvent = async () => {
-      const res = await getCommunityById(session, params.id);
+      const res = await getCommunityById(params.id);
       console.log(user.role, user.id, res.user);
       if (user.role === "user" && user.id !== res.user) {
         navigate("/events");

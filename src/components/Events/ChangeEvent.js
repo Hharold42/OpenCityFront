@@ -55,7 +55,7 @@ const ChangeEvent = () => {
 
   useEffect(() => {
     const fetchEvent = async () => {
-      const res = await getEventById(session, params.id);
+      const res = await getEventById(params.id);
       if (user.role === "user" && user.id !== res.user) {
         navigate("/events");
       }

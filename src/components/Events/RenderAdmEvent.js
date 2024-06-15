@@ -102,7 +102,7 @@ const RenderAdmEvent = ({ item, index, controller }) => {
     <div className="relative h-fit transition-all duration-500">
       <div
         key={index}
-        className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-4"
+        className="relative z-40 w-full h-[350px] bg-[#2B2D3D] my-2 rounded-md grid grid-cols-[25%_30%_30%_15%]"
       >
         {/* Левая часть с изображением */}
         <Link
@@ -142,8 +142,8 @@ const RenderAdmEvent = ({ item, index, controller }) => {
         {/* Правая часть с описанием */}
         <div className="flex flex-col border-l border-white h-full">
           <div className="px-4 py-2 break-words">
-            {item.description.length > 250
-              ? item.description.slice(0, 250) + "..."
+            {item.description.length > 320
+              ? item.description.slice(0, 350) + "..."
               : item.description}
           </div>
         </div>

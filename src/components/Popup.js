@@ -1,7 +1,7 @@
 const Popup = ({ title, text, type, controller }) => {
   return (
     <div
-      className="w-full h-full absolute top-0 flex justify-center items-center bg-[#0000003a]"
+      className="w-full h-full absolute top-0 bottom-0 flex justify-center items-center"
       onClick={() => controller()}
     >
       <div

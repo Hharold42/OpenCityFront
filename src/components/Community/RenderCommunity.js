@@ -70,7 +70,7 @@ const RenderCommunity = ({ item, index }) => {
             </div>
           </div>
           <div className="p-4 border-t border-white flex flex-col h-full bg-[#2a2d3a]">
-            <div className=" truncate">
+            <div className=" break-words">
               Контактная информация:
               <br />
               {item.contact_info}
@@ -88,8 +88,8 @@ const RenderCommunity = ({ item, index }) => {
         </div>
         <div className="flex flex-col border-l border-white h-full">
           <div className="px-4 py-2 break-words">
-            {item.description.length > 250
-              ? item.description.slice(0, 250) + "..."
+            {item.description.length > 350
+              ? item.description.slice(0, 350) + "..."
               : item.description}
           </div>
         </div>

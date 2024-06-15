@@ -32,13 +32,9 @@ export const getAllCommunitiesByStatus = async (token, status) => {
     .then((res) => res.data);
 };
 
-export const getCommunityById = async (token, id) => {
+export const getCommunityById = async (id) => {
   return await axios
-    .get(`${communityBaseUrl}/get/${id}`, {
-      headers: {
-        token: token,
-      },
-    })
+    .get(`${communityBaseUrl}/get/${id}`, {})
     .then((res) => res.data);
 };
 

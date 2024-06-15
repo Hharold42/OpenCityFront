@@ -31,9 +31,9 @@ const RenderAdmReports = ({
 
   useEffect(() => {
     if (entType === "event")
-      getEventById(session, entId).then((data) => setEntName(data.title));
+      getEventById(entId).then((data) => setEntName(data.title));
     if (entType === "community")
-      getCommunityById(session, entId).then((data) => setEntName(data.title));
+      getCommunityById(entId).then((data) => setEntName(data.title));
   }, [entName, entId, entType, session]);
 
   return (

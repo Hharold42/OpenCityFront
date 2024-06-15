@@ -32,7 +32,7 @@ const DetailCommunity = () => {
   useEffect(() => {
     const GC = async () => {
       try {
-        const res = await getCommunityById(session, params.id);
+        const res = await getCommunityById(params.id);
 
         setCommunity(res);
       } catch (e) {
@@ -41,8 +41,8 @@ const DetailCommunity = () => {
       }
     };
 
-    if (session && !community && params) GC();
-  }, [community, session, params, navigate]);
+    if (!community && params) GC();
+  }, [community, params, navigate]);
 
   useEffect(() => {
     const fetchPhoto = async () => {
@@ -82,7 +82,7 @@ const DetailCommunity = () => {
 
   return (
     <div className="page-wrap">
-      {community && user ? (
+      {community ? (
         <div className="flex flex-col w-[1000px] px-4 py-2">
           <div className="relative z-40 w-full bg-[#2B2D3D] my-2 p-4 rounded-md">
             <label className="ft_title break-words">
@@ -138,9 +138,9 @@ const DetailCommunity = () => {
                 </table>
               </div>
             )}
-            {(user.id === community.user || user.role !== "user") && (
+            {user && (user.id === community.user || user.role !== "user") && (
               <div className="my-6 flex flex-row justify-between">
-                <Link className="ft_button" to={`/events/change/${params.id}`}>
+                <Link className="ft_button" to={`/community/change/${params.id}`}>
                   Change
                 </Link>
                 <button
